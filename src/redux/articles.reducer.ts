@@ -4,11 +4,13 @@ export interface Article {
   title: string
 }
 export interface ArticleState {
-  articles: Article[]
+  articles: Article[];
+  error: string;
 }
 
 const initialState: ArticleState = {
   articles: [],
+  error: ''
 }
 
 export const articleSlice = createSlice({
@@ -18,10 +20,13 @@ export const articleSlice = createSlice({
     getArticlesSlice: (state, action) => {
       state.articles = action.payload
     },
+    setErrorSlice: (state, action) => {
+      state.error = action.payload
+    },
 
   },
 })
 
-export const { getArticlesSlice } = articleSlice.actions
+export const { getArticlesSlice, setErrorSlice } = articleSlice.actions
 
 export default articleSlice.reducer

@@ -5,33 +5,24 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  useBlocker,
-  notFound
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { store } from './redux/store'
 import { onEnter, onArticlesEnter } from './redux/actions'
 import { Provider, useSelector } from 'react-redux';
-import { redirect } from '@tanstack/react-router'
 import { Article } from './redux/articles.reducer'
-
-// export const onEnter = (onEnterAction) => (routeParams) =>  {
-//   // get store from context (passed in RouterProvider)
-//   const { store } = routeParams.context;
-//   if (!store) return;
-//   onEnterAction(routeParams)(store.dispatch, store.getState);
-// }
 
 const rootRoute = createRootRoute({
   component: RootComponent,
 })
 
 function RootComponent() {
+  const error = useSelector(state => state.article.error)
   return (
     <>
       <Outlet />
+      <p>{error}</p>
       <TanStackRouterDevtools position="bottom-right" />
     </>
   )
@@ -61,24 +52,11 @@ function IndexComponent() {
   )
 }
 
-// const onArticlesEnter = (routesParams) => {
-//   console.log('routesParams', routesParams)
-//   return (dispatch) => {
-//     // routesParams.navigate({ to: '/' })
-//     redirect({ to:  '/', throw: true })
-//   }
-// }
 const articleRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/articles',
   component: Articles,
   beforeLoad: onEnter(onArticlesEnter),
-  // beforeLoad: async () => {
-  //   const user = true;
-  //   if (user) {
-  //     throw notFound()
-  //   }
-  // }
 })
 
 function Articles() {

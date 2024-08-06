@@ -1,6 +1,6 @@
 
 import { redirect } from '@tanstack/react-router'
-import { getArticlesSlice } from './articles.reducer';
+import { getArticlesSlice, setErrorSlice } from './articles.reducer';
 import { notFound } from '@tanstack/react-router';
 export const actionWithLoader = (
   longPromiseCreatorOrPromise,
@@ -37,8 +37,15 @@ export const onEnter = (onEnterAction) => async (routeParams) =>  {
 export const onArticlesEnter = (routesParams) => {
   return actionWithLoader(async (dispatch) => {
     dispatch(getArticlesSlice([{ title: 'cool' }]))
+
+    // try {
+      // throw new Error('cool')
+      dispatch(setErrorSlice('Some error'))
+    // } catch (err) {
+    //   console.error('errr')
+    // }
     // redirect({ to:  '/', throw: true })
-    notFound({ throw: true })
+    throw notFound()
 
   })
 }
